@@ -8,6 +8,7 @@ $q->bind_param('i', $id);
 if ($q->execute()) {
     $result = $q->get_result();
     $row = $result->fetch_assoc();
+    //eee
 
 }
 
