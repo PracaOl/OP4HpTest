@@ -1,8 +1,8 @@
 <?php
-$fajnyhtml = $_REQUEST['fajnyhtml'];
+//$fajnyhtml = $_REQUEST['fajnyhtml'];
 
 include("headerhtml.html");
-include("$fajnyhtml.html");
+include("fajnyhtml.html");
 include("footerhtml.html");
 
 //$db = new mysqli('localhost', 'root', '', 'debug_test');
