@@ -24,5 +24,30 @@ class User {
         $preparedQuery->execute();
         var_dump($db);
     }
+
+    public function login() {
+        $q = "SELECT * FROM user WHERE login = ? LIMIT 1";
+        $db = new mysqli('localhost', 'root', '', 'loginFormOP');
+        $preparedQuery = $db->prepare($q);
+        $preparedQuery->bind_param('s', $this->login);
+        $preparedQuery->execute();
+        $result = $preparedQuery->get_result();
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            $passwordHash = $row['password'];
+            if (password_verify($this->password, $passwordHash)) {
+                $this->id = $row['id'];
+                $this->firstName = $row['firstName'];
+                $this->lastName = $row['lastName'];
+                echo "zalogowano poprawnie!";
+            } else {
+                echo "Błędny login lub hasło!";
+            }
+        } else {
+            echo "Błędny login lub hasło!";
+            return;
+        }
+
+    }
 }
 ?>
