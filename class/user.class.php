@@ -1,6 +1,7 @@
 <?php
 class User {
     private int $id;
+    private mysqli $db;
     private string $login;
     private string $password;
     private string $firstName;
@@ -12,23 +13,23 @@ class User {
         $this->password = $password;
         $this->firstName = "";
         $this->lastName = "";
+        global $db;
+        $this->db = &$db;
     }
 
-    public function register() {
+    public function register() : bool {
         $passwordHash = password_hash($this->password, PASSWORD_ARGON2I);
         $q = "INSERT INTO user VALUES (NULL, ?, ?, ?, ?)";
-        $db = new mysqli('localhost', 'root', '', 'loginFormOP');
-        $preparedQuery = $db->prepare($q);
+        $preparedQuery = $this->db->prepare($q);
         $preparedQuery->bind_param('ssss', $this->login, $passwordHash, $this->firstName, $this->lastName);
 
         $result = $preparedQuery->execute();
         return $result;
     }
 
-    public function login() {
+    public function login() : bool {
         $q = "SELECT * FROM user WHERE login = ? LIMIT 1";
-        $db = new mysqli('localhost', 'root', '', 'loginFormOP');
-        $preparedQuery = $db->prepare($q);
+        $preparedQuery = $this->db->prepare($q);
         $preparedQuery->bind_param('s', $this->login);
         $preparedQuery->execute();
         $result = $preparedQuery->get_result();
@@ -46,7 +47,15 @@ class User {
         } else {
             return false;
         }
-
+    }
+    public function setFirstName(string $firstName) {
+        $this->firstName = $firstName;   
+    }
+    public function setLAstName (string $lastName) {
+        $this->lastName = $lastName;
+    }
+    public function getName () : string {
+        return $this->firstName . " " . $this->lastName;
     }
 }
 ?>

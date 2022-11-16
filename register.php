@@ -20,12 +20,15 @@
     </form>
     <?php
     if (isset($_REQUEST['login']) && isset($_REQUEST['password'])) {
+        require_once('config.php');
         require_once('class/user.class.php');
         $user = new User ($_REQUEST['login'], $_REQUEST['password']);
+        $user->setFirstName($_REQUEST['firstName']);
+        $user->setFirstName($_REQUEST['lastName']);
         if ($user->register()) {
-            echo "Zalogowano poprawnie";
+            echo "Zarejestrowano poprawnie";
         } else {
-            echo "Błędny login lub hasło";
+            echo "Błędna rejestracja";
         }
     }
     ?>
