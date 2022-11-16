@@ -21,8 +21,8 @@ class User {
         $preparedQuery = $db->prepare($q);
         $preparedQuery->bind_param('ssss', $this->login, $passwordHash, $this->firstName, $this->lastName);
 
-        $preparedQuery->execute();
-        var_dump($db);
+        $result = $preparedQuery->execute();
+        return $result;
     }
 
     public function login() {
@@ -39,13 +39,12 @@ class User {
                 $this->id = $row['id'];
                 $this->firstName = $row['firstName'];
                 $this->lastName = $row['lastName'];
-                echo "zalogowano poprawnie!";
+                return true;
             } else {
-                echo "Błędny login lub hasło!";
+                return false;
             }
         } else {
-            echo "Błędny login lub hasło!";
-            return;
+            return false;
         }
 
     }
