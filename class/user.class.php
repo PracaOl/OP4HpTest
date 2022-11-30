@@ -57,5 +57,15 @@ class User {
     public function getName () : string {
         return $this->firstName . " " . $this->lastName;
     }
+
+    public function save() : bool {
+        $q = "UPDATE user SET
+                firstName = ?,
+                lastName = ?
+                WHERE id = ?";
+                $preparedQuery = $this->db->prepare($q);
+                $preparedQuery->bind_param("ssi", $this->firstName, $this->lastName, $this->id);
+                return $preparedQuery->execute();
+    }
 }
 ?>
