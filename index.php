@@ -5,8 +5,20 @@ use Steampixel\Route;
 require_once("config.php");
 require_once('class/user.class.php');
 
+session_start();
+
 Route::add('/', function() {
-    echo "Main Page";
+    global $twig;
+    $v = array();
+    if(isset($_SESSION['auth']))
+        if($_SESSION['auth']) {
+            $user = $_SESSION['user'];
+            $v['user'] = $user;
+            
+        }
+    $twig->display('home.html.twig');
+    //echo "<pre>";
+    //var_dump($_SESSION);
 });
 
 Route::add('/login', function() { 
@@ -19,13 +31,14 @@ Route::add('/login', function() {
     if(isset($_REQUEST['login']) && isset($_REQUEST['password'])) {
         $user = new User($_REQUEST['login'], $_REQUEST['password']);
         if($user->login()) {
+            $_SESSION['auth']=true;
+            $_SESSION['user']=$user;
             $v = array(
                 'message' => "Zalogowano poprawnie użytkownika: ".$user->getName(),
             );
             $twig->display('message.html.twig', $v);
         } else {
-            $twig->display('login.html.twig', 
-                                ['message' => "Błędny login lub hasło"]);
+            $twig->display('login.html.twig', ['message' => "Błędny login lub hasło"]);
         }
     } else {
         die("Nie otrzymano danych");
@@ -59,6 +72,12 @@ Route::add('/register', function() {
         die("Nie otrzymano danych");
     }
 }, 'post');
+
+Route::add('/logout', function() {
+    global $twig;
+    session_destroy();
+    $twig->display('message.html.twig',['message' => "Wylogowano poprawnie"]);
+});
 
 Route::run('/OP4HpTest');
 ?>
