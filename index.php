@@ -1,20 +1,25 @@
 <?php
+
+use Steampixel\Route;
+
 require_once("config.php");
 require_once('class/user.class.php');
 
-$user = new User('jkowalski', 'tajnehaslo');
-/* if ($user->register()) {
-    echo "Zarejestrowano poprwanie";
-} else {
-    echo "Błąd rejestracji użytkownika";
-} */
-if ($user->login()) {
-    echo "ZAlogowano poprawnie";
-} else {
-    echo "Błędny login lub hasło";
-}
-$user->login();
-echo '<pre>';
-var_dump($user);
+Route::add('/', function() {
+    echo "Main Page";
+});
 
+Route::add('/login', function() {
+    //echo "Login Page";
+    global $twig;
+    $twig->display('login.html.twig');
+});
+
+Route::add('/register', function() {
+    //echo "Register Page";
+    global $twig;
+    $twig->display('register.html.twig');
+});
+
+Route::run('/OP4HpTest');
 ?>
