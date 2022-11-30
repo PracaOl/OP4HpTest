@@ -16,7 +16,7 @@ Route::add('/', function() {
             $v['user'] = $user;
             
         }
-    $twig->display('home.html.twig');
+    $twig->display('home.html.twig', $v);
     //echo "<pre>";
     //var_dump($_SESSION);
 });

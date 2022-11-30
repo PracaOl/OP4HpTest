@@ -1,7 +1,6 @@
 {% include 'header.html.twig' %}
-Strona Główna
+Strona Główna <br>
     {% if user is defined %}
-        Jesteś zalogowany jako: {{user.getName()}}
+        Jesteś zalogowany jako: {{user.getName()}} <a href="/OP4HpTest/logout/">Wyloguj</a>
     {% endif %}
-    <a href="OP4HPTEST/logout/">Wyloguj</a>
 {% include 'footer.html.twig' %}
