@@ -17,6 +17,25 @@ class User {
         $this->db = &$db;
     }
 
+    public function __serialize() : array {
+        return array(   
+                        'id' => $this->id,
+                        'login' => $this->login,
+                        'password' => $this->password,
+                        'firstName' => $this->firstName,
+                        'lastName' => $this->lastName,
+                    );
+    }
+    public function __unserialize(array $data) {
+        $this->id = $data['id'];
+        $this->login = $data['login'];
+        $this->password = $data['password'];
+        $this->firstName = $data['firstName'];
+        $this->lastName = $data['lastName'];
+        global $db;
+        $this->db = &$db;
+    } 
+
     public function register() : bool {
         $passwordHash = password_hash($this->password, PASSWORD_ARGON2I);
         $q = "INSERT INTO user VALUES (NULL, ?, ?, ?, ?)";
@@ -26,6 +45,7 @@ class User {
         $result = $preparedQuery->execute();
         return $result;
     }
+    
 
     public function login() : bool {
         $q = "SELECT * FROM user WHERE login = ? LIMIT 1";
@@ -63,9 +83,9 @@ class User {
                 firstName = ?,
                 lastName = ?
                 WHERE id = ?";
-                $preparedQuery = $this->db->prepare($q);
-                $preparedQuery->bind_param("ssi", $this->firstName, $this->lastName, $this->id);
-                return $preparedQuery->execute();
+        $preparedQuery = $this->db->prepare($q);
+        $preparedQuery->bind_param("ssi", $this->firstName, $this->lastName, $this->id);
+        return $preparedQuery->execute();
     }
 }
 ?>
