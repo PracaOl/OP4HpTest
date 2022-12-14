@@ -9,6 +9,13 @@
             <input type="submit" value="zapisz">
 
         </form>
+        <form action="" method="post">
+            <label for="passwordID">Nowe hasło:</label><br>
+            <input type="password" name="password" id="passwordID"><br>
+            <label for="passwordRepeatID">Powtorz hasło:</label><br>
+            <input type="password" name="passwordRepeat" id="passwordRepeatID"><br>
+            <input type="submit" value="Zmień hasło">
+        </form>
         <a href="/OP4HpTest/logout/">Wyloguj</a>
     {% endif %}
 {% include 'footer.html.twig' %}
